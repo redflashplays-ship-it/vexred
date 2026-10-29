@@ -1,0 +1,12 @@
+BUILD VEXRED WITHOUT INSTALLING GRADLE ON YOUR PC
+
+This project includes a GitHub Actions workflow that builds the mod on GitHub's hosted computer. You do not need to install Java or Gradle locally for this route.
+
+1. Sign in to GitHub and create a new repository. A private repository is fine.
+2. Upload the CONTENTS of this vexred-extension folder to the repository (including the hidden .github/workflows/build.yml folder and the libs folder containing the VexBot JAR).
+3. Open the repository's Actions tab.
+4. Select “Build VexRed” and click “Run workflow”. If prompted, choose the default branch and run it.
+5. Wait for the workflow to finish. If it succeeds, open that workflow run and download the “vexred-fabric-1.21.11” artifact near the bottom.
+6. Extract the downloaded artifact ZIP. The VexRed JAR will be inside.
+
+If the build fails, open the workflow run, expand the failed step, and share the full error log. This workflow has been added but has NOT been run or verified yet. The source may need compile fixes.

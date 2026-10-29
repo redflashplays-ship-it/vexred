@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "vexred",
+  "version": "${version}",
+  "name": "VexRed",
+  "description": "VexBot 3.1.0 extension: bot-only kill commands, proximity chat, conversations, and sign communication.",
+  "environment": "server",
+  "entrypoints": {
+    "main": ["dev.red.vexred.VexRed"]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*",
+    "vexbot": "=3.1.0+mc1.21.11"
+  }
+}
