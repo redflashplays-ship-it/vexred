@@ -138,7 +138,7 @@ final class VexRedChat {
         for (String otherName : BotManager.getBotNames()) {
             if (otherName.equalsIgnoreCase(botName) || !BotManager.isTrackedBotName(otherName) || !VexBotApi.isBot(server, otherName)) continue;
             ServerPlayerEntity other = VexBotApi.resolveBot(server, otherName);
-            if (other == null || !other.isAlive() || other.getWorld() != bot.getWorld()) continue;
+            if (other == null || !other.isAlive() || other.getEntityWorld() != bot.getEntityWorld()) continue;
             double d = other.squaredDistanceTo(bot);
             if (d < botDistance) { botDistance = d; nearestBot = otherName; }
         }
@@ -173,7 +173,7 @@ final class VexRedChat {
             ServerPlayerEntity speaker = VexBotApi.resolveBot(server, pending.listener);
             ServerPlayerEntity listener = VexBotApi.resolveBot(server, pending.speaker);
             if (speaker == null || listener == null || !speaker.isAlive() || !listener.isAlive()) continue;
-            if (speaker.getWorld() != listener.getWorld() || speaker.squaredDistanceTo(listener) > 8.5 * 8.5) continue;
+            if (speaker.getEntityWorld() != listener.getEntityWorld() || speaker.squaredDistanceTo(listener) > 8.5 * 8.5) continue;
             if (areEnemies(pending.speaker, pending.listener)) continue;
             String replyTopic = pending.topic.equals("greeting") ? "greeting" : chooseTopic();
             String reply = randomLine(replyTopic);
@@ -193,7 +193,7 @@ final class VexRedChat {
         MinecraftServer server = player.getEntityWorld().getServer();
         if (server == null) return;
         ServerPlayerEntity bot = VexBotApi.resolveBot(server, pending.botName);
-        if (bot == null || !bot.isAlive() || bot.getWorld() != player.getWorld() || bot.squaredDistanceTo(player) > 8.5 * 8.5) return;
+        if (bot == null || !bot.isAlive() || bot.getEntityWorld() != player.getEntityWorld() || bot.squaredDistanceTo(player) > 8.5 * 8.5) return;
         String topic = classify(raw);
         if (topic == null || !correlates(pending.topic, topic, raw)) return;
         String response = responseFor(topic, raw);
@@ -251,21 +251,21 @@ final class VexRedChat {
     private static void sendNearby(MinecraftServer server, ServerPlayerEntity speaker, String speakerName, String line) {
         Text message = Text.literal("<" + speakerName + "> " + line);
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-            if (player.getWorld() == speaker.getWorld() && player.squaredDistanceTo(speaker) <= 16 * 16) player.sendMessage(message, false);
+            if (player.getEntityWorld() == speaker.getEntityWorld() && player.squaredDistanceTo(speaker) <= 16 * 16) player.sendMessage(message, false);
         }
         // If a bot is speaking to a bot, also ensure nearby players around the recipient see the exchange.
         for (String botName : BotManager.getBotNames()) {
             if (!BotManager.isTrackedBotName(botName) || !VexBotApi.isBot(server, botName)) continue;
             ServerPlayerEntity other = VexBotApi.resolveBot(server, botName);
-            if (other == null || other.getWorld() != speaker.getWorld() || other.squaredDistanceTo(speaker) > 8.5 * 8.5) continue;
+            if (other == null || other.getEntityWorld() != speaker.getEntityWorld() || other.squaredDistanceTo(speaker) > 8.5 * 8.5) continue;
             for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-                if (player.getWorld() == other.getWorld() && player.squaredDistanceTo(other) <= 16 * 16 && player.squaredDistanceTo(speaker) > 16 * 16) player.sendMessage(message, false);
+                if (player.getEntityWorld() == other.getEntityWorld() && player.squaredDistanceTo(other) <= 16 * 16 && player.squaredDistanceTo(speaker) > 16 * 16) player.sendMessage(message, false);
             }
         }
     }
 
     private static boolean writeSign(ServerPlayerEntity bot, String message) {
-        World world = bot.getWorld();
+        World world = bot.getEntityWorld();
         BlockPos existing = findExistingBlankSign(world, bot.getBlockPos(), 6);
         if (existing != null) return writeToSign(world, existing, message);
         BlockPos place = findSignSpot(world, bot.getBlockPos());
