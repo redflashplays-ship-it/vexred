@@ -129,7 +129,7 @@ final class VexRedChat {
         double playerDistance = 8.5 * 8.5;
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             if (VexBotApi.isBot(server, player.getGameProfile().getName())) continue;
-            if (player.getWorld() != bot.getWorld()) continue;
+            if (player.getEntityWorld() != bot.getEntityWorld()) continue;
             double d = player.squaredDistanceTo(bot);
             if (d < playerDistance) { playerDistance = d; nearestPlayer = player; }
         }
