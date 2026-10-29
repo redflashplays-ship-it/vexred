@@ -128,7 +128,7 @@ final class VexRedChat {
         ServerPlayerEntity nearestPlayer = null;
         double playerDistance = 8.5 * 8.5;
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-            if (VexBotApi.isBot(server, player.getGameProfile().getName())) continue;
+            if (VexBotApi.isBot(server, player.getGameProfile().name())) continue;
             if (player.getEntityWorld() != bot.getEntityWorld()) continue;
             double d = player.squaredDistanceTo(bot);
             if (d < playerDistance) { playerDistance = d; nearestPlayer = player; }
@@ -190,7 +190,7 @@ final class VexRedChat {
     private static void onPlayerChat(ServerPlayerEntity player, String raw) {
         PendingConversation pending = PLAYER_CONVERSATIONS.get(player.getUuid());
         if (pending == null || pending.expiresAt < tick || !randomChat) return;
-        MinecraftServer server = player.getServer();
+        MinecraftServer server = player.getEntityWorld().getServer();
         if (server == null) return;
         ServerPlayerEntity bot = VexBotApi.resolveBot(server, pending.botName);
         if (bot == null || !bot.isAlive() || bot.getWorld() != player.getWorld() || bot.squaredDistanceTo(player) > 8.5 * 8.5) return;
